@@ -18,3 +18,6 @@
  - L5
    - P1: Design Patterns
    - P2: Decorators, Iterators, Generators, Context Managers
+ - L6
+   - P1: Files and imports
+   - P2: SQL & NoSQL
