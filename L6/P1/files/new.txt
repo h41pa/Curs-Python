@@ -1,0 +1,4 @@
+Hello
+Have a god day!
+bye
+Astfel adaugam mai mult text la finalul fisierului nostru...

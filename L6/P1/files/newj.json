@@ -1,0 +1,12 @@
+{
+    "id": 1,
+    "name": [
+        "Madalin",
+        "Chelu"
+    ],
+    "height": 1.88,
+    "course": {
+        "name": "Python + Testare automata",
+        "start date": "27 martie 2023"
+    }
+}

@@ -1,0 +1,7 @@
+Pentru a interactiona cu un fisier, primul lucru pe care trebuie sa il facem este sa il citim
+Pentru a citi fisierul ne folosim de fuctionalitatea open()
+In urma citirii/scrierii in fisier trebuie sa il inchidem
+Pentru a ne simplifica viata putem sa ne
+folosim de sintaxa "with open()" iar
+aceasta va incheia interactiunea cu fisierul pentru noi
+

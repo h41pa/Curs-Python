@@ -1,0 +1,4 @@
+Hello!
+I am your file .
+Now, go away.
+Bye bye !

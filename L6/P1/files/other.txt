@@ -1,0 +1,9 @@
+JSON reprezinta JavaScript Object Notation
+Este un format tip text pentru stocare si transportare de date
+El este independent de orice limbaj de programare, toate il folosesc
+Hello...Hello...Hello...Hello...Hello...Hello...Hello, world
+Hello, world
+Hello !!!Hello world !
+Hello !!!Hello world !
+Hello !!!Hello world !
+Hello !!!Hello world !

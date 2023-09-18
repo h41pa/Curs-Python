@@ -33,7 +33,7 @@ print('*' * 50)
 def pp(limit=10):
     p = 0
     while p < limit:
-        yield p **2
+        yield p ** 2
         p +=1
 
 gen = pp()
