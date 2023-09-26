@@ -23,7 +23,7 @@ CREATE TABLE NUmeTabel (
       Attr1 Tip1,
       Attr2 Tip2,
       ....
-)   
+) ;
 Tipurile atributelor pot fi:
 - INT, TINYINT
 - FLOAT

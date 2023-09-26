@@ -21,3 +21,7 @@
  - L6
    - P1: Files and imports
    - P2: SQL & NoSQL
+ - L7
+   - P1: ST1: REST APIs
+         Factory Design Pattern exercise
+   - P2: REST APIs : HTTP methods, status codes, requests
