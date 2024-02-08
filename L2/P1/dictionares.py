@@ -106,7 +106,7 @@ print(dict_complex)
 del dict_complex['course'] # stergerea unui element din dictionar
 print(dict_complex) # {'id': 10, 'name': ['Madalin', 'Chelu'], 'height': 1.88, 'age': 31} - course key deleted
 """
-Putem vedea toate cehile unui dictionar folosind metoda keys()
+Putem vedea toate cheile unui dictionar folosind metoda keys()
 Putem vedea toate valorile unui dictionar folosind metoda values()
 Putem verifica daca o cheie exista intr-un dictionat inaine de a cere valoarea acesteia folosind get
 """
