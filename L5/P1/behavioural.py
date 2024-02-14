@@ -26,7 +26,8 @@ Template method
 Visitor
 """
 
-# observer
+
+# ------------- Observer -------------
 class Blog:
     def __init__(self, name):
         self.name = name
@@ -75,10 +76,12 @@ blog.add_observer(u2)
 
 blog.notify()
 
+# ------------------------------------------------------------------------------
 
-# Null Object
+# ------------- Null Object -------------
 print('-' * 80)
 from abc import ABC, abstractmethod
+
 
 # Interfață pentru obiectul real
 class Animal(ABC):
@@ -86,19 +89,23 @@ class Animal(ABC):
     def make_sound(self):
         pass
 
+
 # Implementare a obiectului real - Cat
 class Cat(Animal):
     def make_sound(self):
         return "Meow!"
+
 
 # Implementare a obiectului null - NullAnimal
 class NullAnimal(Animal):
     def make_sound(self):
         return "No sound. This is a null object."
 
+
 # Funcție care utilizează obiectul Animal
 def animal_sound(animal):
     return animal.make_sound()
+
 
 # Exemplu de utilizare
 cat = Cat()
@@ -109,15 +116,19 @@ print(animal_sound(null_animal))  # Output: "No sound. This is a null object."
 
 print('_' * 80)
 
-#  Chain of responsibility
+# -----------------------------------------------------------------
+
+#  ------------- Chain of responsibility -------------
 
 from abc import ABC, abstractmethod
+
 
 # Interfață pentru Handler
 class Handler(ABC):
     @abstractmethod
     def handle_request(self, request):
         pass
+
 
 # Implementare a unui Handler - ConcreteHandlerA
 class ConcreteHandlerA(Handler):
@@ -126,6 +137,7 @@ class ConcreteHandlerA(Handler):
             print("Handler A handled the request.")
         elif self.successor:
             self.successor.handle_request(request)
+
 
 # Implementare a unui Handler - ConcreteHandlerB
 class ConcreteHandlerB(Handler):
@@ -138,6 +150,7 @@ class ConcreteHandlerB(Handler):
         elif self.successor:
             self.successor.handle_request(request)
 
+
 # Client care inițiază cererile
 class Client:
     def __init__(self):
@@ -147,8 +160,11 @@ class Client:
     def make_request(self, request):
         self.handler_chain.handle_request(request)
 
+
 # Exemplu de utilizare
 client = Client()
 client.make_request("A")  # Output: "Handler A handled the request."
 client.make_request("B")  # Output: "Handler B handled the request."
 client.make_request("C")  # Output: (niciun handler nu a gestionat cererea)
+
+# --------------------------------------------------------------------------------------------------------

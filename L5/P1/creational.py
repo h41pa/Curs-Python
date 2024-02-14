@@ -28,22 +28,25 @@ Exemplu: cand avem un logger pentru un proiect (adica o clasa care scrie informa
 care ruleaza un sistem in timp real in niste fisiere speciale numite loguri care au de obicei extensia .log)
 
 """
+
+
 # Singleton
 
 class Car:
     def __init__(self):
         pass
 
-#c1 si c2 sunt obiecte DIFERITE, adica au ID-uri diferite, si se afla in locatii de memorie diferite.
+
+# c1 si c2 sunt obiecte DIFERITE, adica au ID-uri diferite, si se afla in locatii de memorie diferite.
 c1 = Car()
-c2 =  Car()
+c2 = Car()
 print(id(c1))
 print(id(c2))
 print(c1 == c2)
 
+#  ------------- Singleton -------------
 class SingletonLogger:
-
-    __instance = None # atributul de clasa __ instance va actiona ca un "obiect" fals
+    __instance = None  # atributul de clasa __ instance va actiona ca un "obiect" fals
     # pe care noi il putem returna de fiecare data cand se incearca crearea unui nou obiect din aceasta clasa
 
     """
@@ -59,6 +62,7 @@ class SingletonLogger:
             cls.__instance = object.__new__(cls)
         # Apoi il returnam, acelasi obiect de fiecare data
         return cls.__instance
+
 
 print('_' * 80)
 
@@ -78,11 +82,10 @@ print(s2.create)
 
 print('_' * 80)
 
+
 # singleton folosing decorator
 def singleton(cls):
     instances = {}
-
-
 
     def get_instance(*args, **kwargs):
         if cls not in instances:
@@ -91,13 +94,143 @@ def singleton(cls):
 
     return get_instance
 
+
 @singleton
 class SingletonClass:
     def __init__(self):
         pass
 
+
 # Utilizare:
 obj1 = SingletonClass()
 obj2 = SingletonClass()
 obj1.creat = 'Test'
-print(obj2.creat )
+print(obj2.creat)
+
+print('-' * 80)
+
+
+# -------------Factory -------------
+
+# Definirea interfetei comune pentru obiecte create
+class Animal:
+    def speak(self):
+        pass
+
+
+# Implementare a claselor concrete care implementează interfata
+class Dog(Animal):
+    def speak(self):
+        return "Woof!"
+
+
+class Cat(Animal):
+    def speak(self):
+        return "Meow!"
+
+
+# Factory pentru crearea obiectelor bazate pe un anumit criteriu
+class AnimalFactory:
+    def create_animal(self, animal_type):
+        if animal_type == "dog":
+            return Dog()
+        elif animal_type == "cat":
+            return Cat()
+        else:
+            raise ValueError("Invalid animal type")
+
+
+# Utilizarea Factory pentru a crea obiecte
+animal_factory = AnimalFactory()
+
+dog = animal_factory.create_animal("dog")
+cat = animal_factory.create_animal("cat")
+
+print(dog.speak())  # Output: Woof!
+print(cat.speak())  # Output: Meow!
+
+print('-' * 80)
+
+#------------------------------------------------------------------------------
+
+
+#  ------------- Object Pool -------------
+
+class ObjectPool:
+    def __init__(self, object_type, max_objects):
+        self.object_type = object_type
+        self.max_objects = max_objects
+        self.available_objects = []
+        self.in_use_objects = []
+
+    def create_object(self):
+        if not self.available_objects and len(self.in_use_objects) < self.max_objects:
+            # Creează un nou obiect dacă nu există obiecte disponibile
+            new_object = self.object_type()
+        else:
+            # Ia un obiect disponibil din pool
+            new_object = self.available_objects.pop()
+
+        # Adaugă obiectul la lista de obiecte în uz
+        self.in_use_objects.append(new_object)
+        return new_object
+
+    def release_object(self, obj):
+        # Eliberează obiectul înapoi în pool
+        self.in_use_objects.remove(obj)
+        self.available_objects.append(obj)
+
+
+# Exemplu de utilizare cu o clasă de obiecte simplă
+class SimpleObject:
+    def __init__(self):
+        pass
+
+
+# Creare un pool de obiecte SimpleObject cu o capacitate maximă de 5 obiecte
+simple_object_pool = ObjectPool(SimpleObject, max_objects=5)
+
+# Utilizare
+obj1 = simple_object_pool.create_object()
+obj2 = simple_object_pool.create_object()
+
+# Eliberare obiecte înapoi în pool
+simple_object_pool.release_object(obj1)
+simple_object_pool.release_object(obj2)
+
+print('-' * 80)
+#-----------------------------------------------------------------
+
+
+# ------------- Prototype -------------
+
+import copy
+
+class Prototype:
+    def clone(self):
+        pass
+
+class ConcretePrototype(Prototype):
+    def __init__(self, data):
+        self.data = data
+
+    def clone(self):
+        # Utilizăm copy.deepcopy() pentru a clona obiectul în mod recursiv
+        return copy.deepcopy(self)
+
+
+# Exemplu de utilizare:
+# Creăm un prototip
+prototype_object = ConcretePrototype(data="Initial data")
+
+# Clonăm obiectul
+cloned_object = prototype_object.clone()
+
+# Modificăm datele obiectului clonat
+cloned_object.data = "Modified data"
+
+# Afișăm datele ambelor obiecte
+print("Original Object:", prototype_object.data)
+print("Cloned Object:", cloned_object.data)
+print(id(prototype_object))
+print(id(cloned_object))
