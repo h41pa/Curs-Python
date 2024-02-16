@@ -234,3 +234,68 @@ print("Original Object:", prototype_object.data)
 print("Cloned Object:", cloned_object.data)
 print(id(prototype_object))
 print(id(cloned_object))
+
+print('-' * 80)
+#-----------------------------------------------------------------
+
+
+# ------------- Builder  -------------
+
+# Produsul final care va fi construit
+class Product:
+    def __init__(self):
+        self.parts = []
+
+    def add_part(self, part):
+        self.parts.append(part)
+
+    def show(self):
+        print("Produsul construit:")
+        for part in self.parts:
+            print(part)
+
+
+# Interfața pentru Builder
+class Builder:
+    def build_part_a(self):
+        pass
+
+    def build_part_b(self):
+        pass
+
+    def get_result(self):
+        pass
+
+
+# ConcreteBuilder - Implementează Builder pentru a construi un anumit tip de produs
+class ConcreteBuilder(Builder):
+    def __init__(self):
+        self.product = Product()
+
+    def build_part_a(self):
+        self.product.add_part("Part A")
+
+    def build_part_b(self):
+        self.product.add_part("Part B")
+
+    def get_result(self):
+        return self.product
+
+
+# Director - Coordonatorul care utilizează Builder pentru a construi un produs specific
+class Director:
+    def __init__(self, builder):
+        self.builder = builder
+
+    def construct(self):
+        self.builder.build_part_a()
+        self.builder.build_part_b()
+
+
+# Exemplu de utilizare:
+builder = ConcreteBuilder()
+director = Director(builder)
+
+director.construct()
+product = builder.get_result()
+product.show()
