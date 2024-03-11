@@ -1,0 +1,15 @@
+{# asa punem comentarii in template-urile Django #}
+
+{% if latest_question_list %}
+    <ul>  {# ul este unordered list #}
+    {% for question in latest_question_list %}
+        {# li = list item, a = link #}
+        <li>
+            {# /polls/{{ question.id }} se va evalua ca /polls/1 , /polls/2 , etc. #}
+            <a href="/polls/{{ question.id }}">{{ question.question_text }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}

@@ -1,0 +1,30 @@
+{# h1 - cel mai mare header, sunt de la h1 pana la h6 #}
+<h1>{{ question.question_text }}</h1>
+<ul>
+    {# iteram prin toate optiunile de raspuns, si le afisam intr-o lista neordonata #}
+    {% for choice in question.choice_set.all %}
+        <li>{{ choice.choice_text }}</li>
+    {% endfor %}
+</ul>
+
+<h2> De aici incolo avem partea de VOTARE </h2>
+
+{# form = formular care face un POST catre URL-ul definit in action #}
+{# pentru URL, avem nevoie de numele pe care l-am pus in path #}
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{# CSRF token = este un tag obligatoriu pentru metodele POST, acesta este un token invizibil generat automat de Django pentru a preveni atacurile cibernetice #}
+{% csrf_token %}
+<fieldset>
+    <legend><h1>{{ question.question_text }}</h1></legend>
+
+    {# pentru fiecare optiune de raspuns, afisam un buton radio, si  numele optiunii #}
+    {% for choice in question.choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+        <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+    {# line break, pune practic o linie goala intre optiuni #}
+    <br>
+    {% endfor %}
+</fieldset>
+    {# butonul de submit #}
+<input type="submit" value="Vote">
+</form>
