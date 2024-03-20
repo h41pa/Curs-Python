@@ -21,4 +21,5 @@ urlpatterns = [
     # includem url-urile din app polls, cu prefixul /polls
     path("polls/", include("polls.urls"), name='polls'),
     path('admin/', admin.site.urls),
+
 ]

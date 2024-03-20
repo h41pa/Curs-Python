@@ -1,5 +1,5 @@
 ## Django
-
+https://docs.djangoproject.com/en/5.0/intro/tutorial02/
 ### Ce este Django?
 
 Django este un web framework care ne ofera foarte multe features pentru dezvoltarea site-urilor web, cum ar fi:
@@ -34,6 +34,13 @@ Apoi, putem incepe sa cream aplicatii (apps) cu comanda:
 
 O aplicatie este un modul functional Django, in care logica codului este grupata impreuna.
 
+# dupa start app - in cazul me polls = app
+- creem fisier urls.py  in folder "app" trebuie facut in fiecare app(daca avem mai multe), definim urlpatterns(mapeaza url) 
+dupa trebuie importat app/urls.py in  in mysite.urls(pagina cu setarile site-ului) si folosim functia include() in urlpatterns
+path("app/", include("app.urls"), name='app'),
+ - name="index" folosit la redirect si etc.
+- dupa ce cream o functie in view , ne duce in app/urls.py adauga in url patternspath("numefunctie", views.numefunc, name="hello")
+- 
 
 ### ORM si baze de date
 
@@ -48,9 +55,9 @@ Pentru gestiunea bazei de date avem urmatoarele comenzi:
     sa corespunda cu modelele Python. Acest lucru se intampla prin niste fisiere speciale, numite migrations.
 - `python manage.py makemigrations` -- aceasta comanda genereaza fisierele mentionate mai sus din codul nostru Python.
 
-Pentru a putea genera fisiere de migrari, app noastra trebuie sa fie adaugata in settings, in `INSTALLED_APPS`.
+Pentru a putea genera fisiere de migrari, app noastra trebuie sa fie adaugata in settings, in `INSTALLED_APPS`. 
 
-Pentru a putea face queries pe db, vom folosi intotdeauna modelele:
+# Pentru a putea face queries pe db, vom folosi intotdeauna modelele:
 - INSERT: pentru a insera in baza de date, vom crea un obiect din clasa noastra model, iar apoi vom apela metoda `save()`
 - UPDATE: la fel si pentru update, vom folosi obiectul (instanta clasei) si dupa ce facem modificari, apelam `save()`
 - DELETE: avem metoda `delete()` care sterge din baza de date, dar obiectul Python ramane in continuare disponibil (fara id)
@@ -70,9 +77,25 @@ tot setul de obiecte related, iar pe acest set putem aplica aceleasi metode ca s
 
 Pentru a ne conecta la shell (consola interactiva), folosim comanda:
 `python manage.py shell`
-
+mai multe aici : https://docs.djangoproject.com/en/5.0/intro/tutorial02/
 Apoi putem sa folosim modelele, si sa executam diferite instructiuni (atentie, trebuie sa le importam).
-
+from django.db
+>>> from polls.models import Choice, Question 
+> from django.utils import timezone
+q1  = Question(question_text="What's new?", pub_date=timezone.now())
+q1.save()  # pentru a salva in baza de date si ii da id
+> putem vedea info despre q1  , folosind campurile data in db gen q1.question_text
+> exit()
+> allq = Question.objects.all()  - object manager vezi mai sus - un query allq[1] cu all() ne da o lista de obiecte
+> q = Question.objects.get(id=2)
+> q3 = Questions.objects.filter(question_text='blabla').first() - primu
+>>> from polls.models import Choice  # legam choice de intreabre 
+> q = QUestion.objects.get(id=1)
+> c1 = Choice(question=q, choice_text='OK) pentru ca am folosit foreignkey in models acumn orice c catre q va 
+contine toate c,c1,c2 ce le definesc
+> c1.save()
+> Relatia inversa ( de la question la choice) va fi denumita choice_set (adica numele modelului curent + '_set') 
+q.choice_set, q.choice_set.all() django ne returneaza modele ca nume obbiect , pentru a da nume putem face in models def __str__
 
 ### Interfata admin
 

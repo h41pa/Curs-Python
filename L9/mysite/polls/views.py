@@ -78,9 +78,7 @@ def detail_with_try_except(request, question_id):
     # In final, randam template-ul si il returnam ca si raspuns
     return render(request, "polls/detail.html", context)
 
-def detail(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/detail.html", {"question": question})
+ 
 
 
 def results(request, question_id):
@@ -106,3 +104,4 @@ def vote(request, question_id):
     redirect_url = reverse("polls:results", args=(question.id,))
     # Redirectam utilizatorul catre pagina de results dupa votarea cu succes
     return HttpResponseRedirect(redirect_url)
+
