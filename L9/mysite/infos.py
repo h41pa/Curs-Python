@@ -72,10 +72,139 @@ nu mai e nevoie sa ne ducem si in mysite/urls.py adica url globals ca deja am ad
 "Nume.objects. (comenzile, get, order , etc)" vezi in views.py - index_old  - Question.objects.order_by("-pub_date")[:3]
    intotdeauna trebuie la fiecare functie/view sa returnam un HttpResponse
 
+###   -  ca sa facem o interfata html la site , django are o interfata html ,
+template tags doar pentru asta, ca fisierele html in mod normal sunt statice
+Pentru a putea avea niste raspunsuri HTML din views, folosim engine-ul de templates integrat in Django.
+Acesta ne permite sa facem fisiere HTML dinamice (adica care sunt generate la runtime) prin prezenta unor
+structuri speciale numite template tags.
+Template-urile pentru o aplicatie se vor pune in folderul `<nume app>/templates/<nume app>`  - (polls/templates/polls/index.html)..
+ - Trebuie sa creeam noi folderul templates in myapp , facem folderul templates, dupa care mai facem un folder cu numele app si adauga html aici
+
+ #- Pentru a folosi aceste templetase trebuie sa le incarcam in views:
+- in views.py ,  from django.template import loader   (importam un loader) ( index_logn example)
+- apoi facem   template = loader.get_template("polls/index.html") ( trebuie sa ii dam path, numeappsi html )
+-  pentru a pasa templete ului lista de intrebuie trebuie sa face un context, este un disctionar, un care spune cum se numeste si valoarea din view
+context = {
+        "latest_question_list": latest_question_list,
+    }
+- trebuie sa returna un raspuns dupa aceea:
+# returnam un HTTP response (200) care randeaza template-ul index.html folosind contextul de mai sus
+# template.render(context, request) => aceasta este partea care transforma template-ul intr-un fisier HTML pur
+         return HttpResponse(template.render(context, request))
+
+### varinata long
+
+def index_long(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    # Incarcam template-ul facut de noi, folosind path-ul acestuia
+    template = loader.get_template("polls/index.html")
+    # Contextul ne ajuta sa trimitem informatii din view catre template
+    # acesta este de fapt doar un dictionar, in care cheia este numele pe care il vom folosi in template
+    # iar valoarea este ceea ce vrem noi sa trimite (de obicei o variabila)
+    context = {
+        "latest_question_list": latest_question_list,
+    }
+    # returnam un HTTP response (200) care randeaza template-ul index.html folosind contextul de mai sus
+    # template.render(context, request) => aceasta este partea care transforma template-ul intr-un fisier HTML pur
+    return HttpResponse(template.render(context, request))
+
+----   **** de asemenea django ofera posibilitatea de scurta randarea unui template prin: _______
+        render(request, <nume template>, context)
+# varianta short
+def index(request):
+    latest_question_list = Question.objects.order_by("-pub_date")[:5]
+    context = {
+        "latest_question_list": latest_question_list,
+    }
+
+    # Shortcut pentru randarea unui template:
+    # render(request, <nume template>, context)
+    return render(request, "polls/index.html", context)
+
+mai pot scri si gen :   return render(request, "polls/index.html", {"latest_question_list": latest_question_list}) ,
+direct dicitionarul context
+{}{}{}    {}{}{}    {}{}{}    {}{}{}    {}{}{}
+
+Exception handling in django folosing try:
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+    try:
+        q = Question.objects.get(id=question_id)
+    except Question.DoesNotExist:
+        # Tratam cazul in care intrebarea cu ID-ul cerut nu exista
+        raise Http404("Question does not exist")
+
+### un shortcut pt getobejct sau 404 ar fi :
+from django.shortcuts import render, get_object_or_404
+
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, "polls/detail.html", {"question": question})
+
+echivalent cu doar ca nu mai trebuie sa face exeception cum e mai jos: ( mai exista si  get_list_or_404() )
+def detail(request, question_id):
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    return render(request, "polls/detail.html", {"question": question})
+
+
+pentru a itera prin toate variantele de raspuns pentru o intrebare ne folosim de question.choice_set.all  - detail.html
+pentru a putea vota trebuie folosit un form , vezi detail.html si views.py
+shorting url in html mai rapid :
+<a href="{% url 'detail' question.id %}">{{ question.question_text }}
+<a href="/polls/{{ question.id }}">{{ question.question_text }}
+In djnago folosim <form action= >  </form> de fiecare daca in form trebuie sa folosim {% csrf_token %} - sau nu va functiona
+{# form = formular care face un POST catre URL-ul definit in action #}
+<form action="{% url 'polls:vote' question.id %}" method="post">
+ca sa mearga in html 'polls:vote' trebuie adaugat  app_name = "polls" in urls.py local
+
+<filedset> ne ajuta grupa mai multe campuri
 
 """
 
 """
+mereu la if trebuie mereu incheiat  {% endif %} {% endfor %}
+{% if conditie %}  , pentru a afisa data {{ question.question_text }}
+{# asa punem comentarii in template-urile Django #}   
+Exemple de template tags:
+```
+    {% if conditie %}
+        <cod HTML>
+    {% else %}
+        <alt cod HTML>
+    {% endif %}
+```
+```ignorelang
+    {% for item in collection %}
+        <cod HTML in care putem folosi item>
+    {% endfor %}
+```
+
+Pentru a afisa date, folosim duble acolade.
+```ignorelang
+{{ question.question_text }}
+```
+
+-----------------------------------------------------
+{# asa punem comentarii in template-urile Django #}
+
+{% if latest_question_list %}
+    <ul>  {# ul este unordered list #}
+    {% for question in latest_question_list %}
+        {# li = list item, a = link # -  a are un href - un link unde sa ne duca}
+        <li>
+            {# /polls/{{ question.id }} se va evalua ca /polls/1 , /polls/2 , etc. # }
+            { - for loop prin lista noastra de intrebari si va geenra u link ca va fi afisat ca si textul intrebarii {{ question.question_text }}
+             iar linkul ne va duce la /polls/{{ question.id }}}
+            <a href="/polls/{{ question.id }}">{{ question.question_text }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+
 
 """
 

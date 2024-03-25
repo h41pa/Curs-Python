@@ -115,7 +115,7 @@ Pentru a putea avea niste raspunsuri HTML din views, folosim engine-ul de templa
 Acesta ne permite sa facem fisiere HTML dinamice (adica care sunt generate la runtime) prin prezenta unor
 structuri speciale numite template tags.
 
-Template-urile pentru o aplicatie se vor pune in folderul `<nume app>/templates/<nume app>`.
+Template-urile pentru o aplicatie se vor pune in folderul `<nume app>/templates/<nume app>` - (polls/templates/polls/index.html).
 Exemple de template tags:
 ```
     {% if conditie %}

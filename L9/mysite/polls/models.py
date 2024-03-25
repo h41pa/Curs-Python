@@ -31,7 +31,6 @@ class Question(models.Model):
         # str este reprezentarea sub forma de string a unui obiect
         return self.question_text
 
-
 class Choice(models.Model):
     # FK catre Question, deoarece un Choice poate sa fie doar pentru un Question
     # on_delete = stabileste comportamentul acestui model atunci cand noi stergem modelul referentiat

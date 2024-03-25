@@ -6,11 +6,11 @@
         <li>{{ choice.choice_text }}</li>
     {% endfor %}
 </ul>
-
+ 
 <h2> De aici incolo avem partea de VOTARE </h2>
 
 {# form = formular care face un POST catre URL-ul definit in action #}
-{# pentru URL, avem nevoie de numele pe care l-am pus in path #}
+{# pentru URL, avem nevoie de numele pe care l-am pus in path , polls:vote si daca are aparametri avem nevoie si de aceia question.id vezi in urls.py#}
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {# CSRF token = este un tag obligatoriu pentru metodele POST, acesta este un token invizibil generat automat de Django pentru a preveni atacurile cibernetice #}
 {% csrf_token %}

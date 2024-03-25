@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-
+#  pk = primary key
 # Create your views here.
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.template import loader
@@ -29,6 +29,7 @@ def index_old(request):
     # aici returnam raspunsul, care by default o sa aiba status code 200 (SUCCESS)
     return HttpResponse(output)
 
+# varianta long return htm
 def index_long(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     # Incarcam template-ul facut de noi, folosind path-ul acestuia
@@ -43,6 +44,7 @@ def index_long(request):
     # template.render(context, request) => aceasta este partea care transforma template-ul intr-un fisier HTML pur
     return HttpResponse(template.render(context, request))
 
+# varianta short
 def index(request):
     latest_question_list = Question.objects.order_by("-pub_date")[:5]
     context = {
@@ -52,6 +54,8 @@ def index(request):
     # Shortcut pentru randarea unui template:
     # render(request, <nume template>, context)
     return render(request, "polls/index.html", context)
+
+
 
 """
 Pentru views in care avem parametrii dinamici (ex. id unei intrebari),
@@ -96,12 +100,17 @@ def vote(request, question_id):
     selected_choice_id = request.POST['choice']
     # Acum trebuie sa luam optiunea selectata ca si obiect din baza de date
     selected_choice = get_object_or_404(Choice, pk=selected_choice_id)
-    # Incrementam numarul de voturi pentru optiunea selectata
+    # Incrementam numarul de voturi pentru optiunea selectata (votes este in baza de date)
     selected_choice.votes += 1
     # IMPORTANT: salvam modificarile in baza de date!!
     selected_choice.save()
     # Calculam url-ul de redirectionare (catre pagina de rezultate)
-    redirect_url = reverse("polls:results", args=(question.id,))
+    # functia reverse calculeaza un url, cu argumente ca  si {% url 'polls:vote' question.id %}
+    redirect_url = reverse("polls:results", args =(question.id,))
     # Redirectam utilizatorul catre pagina de results dupa votarea cu succes
     return HttpResponseRedirect(redirect_url)
 
+
+def detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    return render(request, "polls/detail.html", {"question": question})
