@@ -136,3 +136,41 @@ Pentru a afisa date, folosim duble acolade.
 ```
 
 Toate aceste template tags sunt evaluate la rulare, si fisierul generat va fi pur HTML.
+
+
+### For deploy :
+python manage.py collectstatic
+
+pip install gunicorn
+
+pip install whitenoise  ( pentru a functionaza static si media in DEBUG= False)
+
+pentru whitenoise :
+
+- add 'whitenoise.middleware.WhiteNoiseMiddleware',  in MIDDLEWARE - settings.py
+- add STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' settings.py
+- in urls add: so media file works  - re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT, }, ), urls.py
+
+pentru restu pentru a citi static , in urls
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+in settings.py 
+TEMPLATES -  'DIRS': [BASE_DIR, 'templates'],
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# for deploy on web
+# CSRF_TRUSTED_ORIGINS = ['*']
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
